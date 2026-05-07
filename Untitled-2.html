@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>🎱 LOTTO - 친목 이벤트</title>
+<title>🎱 어버이날 특별 LOTTO 이벤트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -132,9 +132,10 @@ body{background:#e0e0e0;display:flex;justify-content:center;align-items:flex-sta
 .bonus-sep{color:rgba(255,255,255,.5);font-size:16px}
 .result-body{flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
 .r-ticket{background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 8px rgba(0,0,0,.07)}
-.r-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.r-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .r-lbl{font-size:12px;color:#999;font-weight:700}
 .prize{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.r-item{font-size:12px; color:#444; margin-bottom:8px; font-weight:500; display:flex; align-items:center; gap:4px;}
 .r-balls{display:flex;gap:5px;flex-wrap:wrap}
 .r-ball{width:30px;height:30px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
 .r-ball.hit{box-shadow:0 0 0 2.5px #6C3CE1,0 0 8px rgba(108,60,225,.4)}
@@ -148,19 +149,19 @@ body{background:#e0e0e0;display:flex;justify-content:center;align-items:flex-sta
 <!-- HOME -->
 <div id="s-home" class="screen active">
   <div class="home-top">
-    <div class="home-logo">🎱 LOTTO</div>
+    <div class="home-logo">🌸 LOTTO</div>
     <div class="home-balls" id="deco-balls"></div>
   </div>
   <div class="home-body">
     <div class="info-card">
-      <h3>🎉 친목 이벤트</h3>
-      <p>무료로 로또 번호를 생성하고 가상 추첨을 즐겨보세요! 실제 구매와 무관한 순수 재미용 앱입니다.</p>
+      <h3>💐 대가족 실속 이벤트</h3>
+      <p>부모님과 친척 모두가 즐거운 로또 추첨! 마트 가성비 선물들이 준비되어 있습니다.</p>
     </div>
     <div class="info-card">
-      <h3>📋 이용 방법</h3>
-      <p>① 게임 수 선택 → ② 번호 방식 선택 → ③ 번호 생성 → ④ 2분 후 영상 시청 & 결과 확인</p>
+      <h3>📋 참여 방법</h3>
+      <p>① 게임 수 선택 → ② 번호 방식 선택 → ③ 번호 생성 → ④ 생방송 시청 후 실속 상품 확인!</p>
     </div>
-    <button class="btn-start" onclick="goTo('s-count')">🎯 로또 번호 선택</button>
+    <button class="btn-start" onclick="goTo('s-count')">💝 로또 번호 선택</button>
   </div>
 </div>
  
@@ -561,7 +562,8 @@ function runDraw(){
   var di=setInterval(function(){
     if(step<6){
       var n; do{
-        if(userNumbers.length > 0 && Math.random() < 0.1) {
+        // 당첨확률 65% 보정
+        if(userNumbers.length > 0 && Math.random() < 0.65) {
           n = userNumbers[Math.floor(Math.random() * userNumbers.length)];
         } else {
           n = Math.floor(Math.random()*45)+1;
@@ -583,7 +585,7 @@ function runDraw(){
       step++;
     } else if(step===6){
       var bn; do{
-        if(userNumbers.length > 0 && Math.random() < 0.1) {
+        if(userNumbers.length > 0 && Math.random() < 0.65) {
           bn = userNumbers[Math.floor(Math.random() * userNumbers.length)];
         } else {
           bn = Math.floor(Math.random()*45)+1;
@@ -620,12 +622,14 @@ function getPrize(ticket,winning,bonus){
   var wSet=new Set(winning);
   var match=ticket.filter(function(n){return wSet.has(n)}).length;
   var hasB=ticket.indexOf(bonus)>-1;
-  if(match===6)return{t:'1등',c:'#6C3CE1',bg:'#F0ECFF'};
-  if(match===5&&hasB)return{t:'2등',c:'#FF8C00',bg:'#FFF3E0'};
-  if(match===5)return{t:'3등',c:'#22C55E',bg:'#F0FFF4'};
-  if(match===4)return{t:'4등',c:'#3B82F6',bg:'#EFF6FF'};
-  if(match===3)return{t:'5등',c:'#8B5CF6',bg:'#F5F3FF'};
-  return{t:'낙첨',c:'#999',bg:'#F5F5F5'};
+  
+  // 마트 가성비 상품 리스트 (20만원 예산 기반)
+  if(match===6)return{t:'1등',c:'#6C3CE1',bg:'#F0ECFF', item:'마트 상품권 3만원'};
+  if(match===5&&hasB)return{t:'2등',c:'#FF8C00',bg:'#FFF3E0', item:'☕커피'};
+  if(match===5)return{t:'3등',c:'#22C55E',bg:'#F0FFF4', item:'술안주 사오는 쿠폰'};
+  if(match===4)return{t:'4등',c:'#3B82F6',bg:'#EFF6FF', item:'🍜 라면'};
+  if(match===3)return{t:'5등',c:'#8B5CF6',bg:'#F5F3FF', item:'🥤 탄산음료'};
+  return{t:'낙첨',c:'#999',bg:'#F5F5F5', item:' 설거지권'};
 }
  
 function showResult(){
@@ -647,6 +651,10 @@ function showResult(){
     var lbl=document.createElement('div');lbl.className='r-lbl';lbl.textContent=(i+1)+'게임';
     var badge=document.createElement('div');badge.className='prize';
     badge.textContent=prize.t;badge.style.color=prize.c;badge.style.background=prize.bg;
+    
+    var itemDiv=document.createElement('div');itemDiv.className='r-item';
+    itemDiv.innerHTML=`<span>🎁 상품: </span><b>${prize.item}</b>`;
+    
     top.appendChild(lbl);top.appendChild(badge);
     var balls=document.createElement('div');balls.className='r-balls';
     t.forEach(function(n){
@@ -655,7 +663,9 @@ function showResult(){
       if(wSet.has(n))b.classList.add('hit');
       balls.appendChild(b);
     });
-    div.appendChild(top);div.appendChild(balls);body.appendChild(div);
+    div.appendChild(top);
+    div.appendChild(itemDiv);
+    div.appendChild(balls);body.appendChild(div);
   });
   goTo('s-result');
 }
